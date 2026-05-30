@@ -1,33 +1,33 @@
 import React from 'react';
 
-// The Modal component accepts show, onClose, and children as props
 const Modal = ({ show, onClose, children }) => {
   
-  // If 'show' is false, return null (render nothing)
   if (!show) {
     return null;
   }
 
-  // If 'show' is true, render the modal UI
   return (
-    // REQUIRED: Class name 'model-overlay'
-    <div className="model-overlay" style={{ padding: '20px', backgroundColor: '#add8e6', marginTop: '10px' }}>
+    // FIX 1: Overlay par onClick={onClose} lagaya. 
+    // Ab user Modal ke bahar (background/overlay) click karega toh modal band ho jayega.
+    <div className="model-overlay" onClick={onClose} style={{ padding: '20px', backgroundColor: '#add8e6', marginTop: '10px' }}>
       
-      {/* REQUIRED: Class name 'model-close' */}
-      {/* Clicking this triggers the onClose function passed from the parent */}
-      <button 
-        className="model-close" 
-        onClick={onClose} 
-        style={{ backgroundColor: '#d9534f', color: 'white', padding: '5px 10px', border: 'none', cursor: 'pointer' }}
-      >
-        Close
-      </button>
+      {/* FIX 2: Ek naya div jisme class "model" hai (Cypress isi ko dhundh raha tha). */}
+      {/* e.stopPropagation() ka matlab hai ki agar user is white box ke andar click kare, toh click bahar overlay tak na jaye (warna modal andar click karne se bhi band ho jata). */}
+      <div className="model" onClick={(e) => e.stopPropagation()}>
+        
+        <button 
+          className="model-close" 
+          onClick={onClose} 
+          style={{ backgroundColor: '#d9534f', color: 'white', padding: '5px 10px', border: 'none', cursor: 'pointer' }}
+        >
+          Close
+        </button>
 
-      {/* REQUIRED: Class name 'model-p' */}
-      {/* This renders whatever is placed between the <Modal> tags in App.js */}
-      <p className="model-p">
-        {children}
-      </p>
+        <p className="model-p">
+          {children}
+        </p>
+
+      </div>
       
     </div>
   );
